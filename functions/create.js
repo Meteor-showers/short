@@ -64,10 +64,10 @@ export async function onRequest(context) {
 
     // 自定义slug长度检查 2<slug<10 是否不以文件后缀结尾
     if (slug && (slug.length < 2 || slug.length > 10 || /.+\.[a-zA-Z]+$/.test(slug))) {
-        return Response.json({ message: 'Illegal length: slug, (>= 2 && <= 10), or not ending with a file extension.' },{
+        return Response.json({ message: 'Illegal length: custom, (>= 2 && <= 10), or not ending with a file extension.' },{
             headers: corsHeaders,
             status: 400
-        
+
         });
     }
 
@@ -90,9 +90,9 @@ export async function onRequest(context) {
 
             // slug 已存在
             if (existUrl) {
-                return Response.json({ message: 'Slug already exists.' },{
+                return Response.json({ message: 'custom already exists.' },{
                     headers: corsHeaders,
-                    status: 200  
+                    status: 200
                 })
             }
         }
@@ -105,7 +105,7 @@ export async function onRequest(context) {
             return Response.json({ slug: existSlug.existSlug, link: `${origin}/${existSlug.existSlug}` },{
                 headers: corsHeaders,
                 status: 200
-            
+
             })
         }
         const bodyUrl = new URL(url);
@@ -121,7 +121,7 @@ export async function onRequest(context) {
         const slug2 = slug ? slug : generateRandomString(4);
         // console.log('slug', slug2);
 
-        const info = await env.DB.prepare(`INSERT INTO links (url, slug, ip, status, ua, create_time) 
+        const info = await env.DB.prepare(`INSERT INTO links (url, slug, ip, status, ua, create_time)
         VALUES ('${url}', '${slug2}', '${clientIP}',1, '${userAgent}', '${formattedDate}')`).run()
 
         return Response.json({ slug: slug2, link: `${origin}/${slug2}` },{
@@ -139,6 +139,3 @@ export async function onRequest(context) {
 
 
 }
-
-
-
