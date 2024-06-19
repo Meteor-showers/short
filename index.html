@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <link rel="icon" href="asset/img/favicon.png">
@@ -187,7 +188,7 @@
             width: 100%;
             height: 4px;
             /* background: linear-gradient(to right, #4263eb, #5c7cfa, #4263eb); */
-            background:url(https://pic.xkzs.icu/i/share/Marquee.gif);
+            background: url(https://pic.xkzs.icu/i/share/Marquee.gif);
             background-size: 200% 100%;
             animation: marquee 5s linear infinite;
             position: fixed;
@@ -200,6 +201,7 @@
             0% {
                 background-position: 0 0;
             }
+
             100% {
                 background-position: 100% 0;
             }
@@ -215,6 +217,7 @@
         }
     </style>
 </head>
+
 <body>
     <!-- 顶部跑马灯特效 -->
     <div id="top-grrk"></div>
@@ -223,11 +226,11 @@
     </header>
     <main x-data="app" x-cloak>
         <p x-show.transition.opacity="alert" :class="alert?.type" x-text="alert?.message" class="alert"></p>
-        <input placeholder="输入要缩短的网址..." x-model="url" x-ref="url"/>
+        <input placeholder="输入要缩短的网址..." x-model="url" x-ref="url" />
         <details>
             <summary>自定义设置</summary>
             <div>
-                <input placeholder="xkzs" x-model="slug"/>
+                <input placeholder="xkzs" x-model="slug" />
                 <small>xkzs 默认是随机生成的短 id。</small>
             </div>
         </details>
@@ -273,29 +276,30 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(body)
                 })
-                .then(res => res.json())
-                .then(res => {
-                    this.loading = false;
-                    if (res.message) {
-                        this.alert = { type: 'error', message: res.message };
-                        return;
-                    }
+                    .then(res => res.json())
+                    .then(res => {
+                        this.loading = false;
+                        if (res.message) {
+                            this.alert = { type: 'error', message: res.message };
+                            return;
+                        }
 
-                    this.url = res.link;
+                        this.url = res.link;
 
-                    $nextTick(() => {
-                        $refs.url.select();
-                        this.alert = { type: 'success', message: '链接已生成并复制到剪贴板' };
-                        document.execCommand('copy');
+                        $nextTick(() => {
+                            $refs.url.select();
+                            this.alert = { type: 'success', message: '链接已生成并复制到剪贴板' };
+                            document.execCommand('copy');
+                        });
+                    })
+                    .catch(e => {
+                        this.alert = { type: 'error', message: e.message };
+                        this.loading = false;
                     });
-                })
-                .catch(e => {
-                    this.alert = { type: 'error', message: e.message };
-                    this.loading = false;
-                });
             }
         }
     </script>
-    <script src="https://cdn.jsdelivr.net/gh/Meteor-showers/github_proxy@main/Disable.js?v=1.0"></script>
+    <script src="https://cdn.jsdelivr.net/gh/Meteor-showers/github_proxy@main/js/Disable.js?v=1.0"></script>
 </body>
+
 </html>
